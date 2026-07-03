@@ -1,19 +1,20 @@
 # Ravi Carlos - 1 Aninho
 
-Convite Premium Engine V1 pronto para GitHub Pages.
+Convite Premium Engine V1 - versão corrigida para Android fraco/navegador interno.
 
-## Nome sugerido do repositório
-`convites-premium-Ravi-Carlos`
+## Correções desta versão
+- Vídeo mais leve e com fast start.
+- `preload="metadata"` para evitar travar navegador interno.
+- Se a abertura não iniciar, aparece botão **Reproduzir abertura**.
+- Botão **Pular abertura** sempre disponível.
+- Música de fundo em 30% de volume.
+- Sugestões de presentes com X para voltar.
+- Preview do WhatsApp em JPG.
 
 ## Como publicar
-1. Crie um repositório público no GitHub com o nome `convites-premium-Ravi-Carlos`.
-2. Envie todos os arquivos desta pasta para a raiz do repositório.
-3. Ative GitHub Pages em Settings > Pages > Deploy from branch > main > /(root).
-4. O link ficará: `https://convitepremium.github.io/convites-premium-Ravi-Carlos/`
+1. Suba todos os arquivos na raiz do repositório `convites-premium-Ravi-Carlos`.
+2. Faça commit.
+3. Aguarde o GitHub Pages atualizar.
 
-## Teste de botões
-Use `?debug=1` no final do link para visualizar as áreas clicáveis.
-
-## Observação
-O vídeo mantém o áudio original do personagem. A música de fundo toca separada em 30% de volume.
-forçar deploy
+## Debug
+Use `?debug=1` no final do link para ver as áreas clicáveis.

@@ -18,7 +18,6 @@
   <link rel="preload" href="assets/preview.jpg" as="image" />
   <link rel="preload" href="assets/principal.webp" as="image" />
   <link rel="preload" href="assets/presentes.webp" as="image" />
-  <link rel="preload" href="assets/video.mp4" as="video" />
   <style>
     *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071b12;font-family:Arial,Helvetica,sans-serif;color:white;touch-action:manipulation}
     body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 5%,rgba(101,206,255,.30),transparent 38%),linear-gradient(180deg,#071b12,#0b2b16 70%,#041009);z-index:-3}
@@ -28,6 +27,7 @@
     .tag{letter-spacing:.34em;color:#ffd76b;font-size:12px;font-weight:900;margin-bottom:16px}.title{font-size:clamp(42px,10vw,74px);font-weight:900;line-height:.95;margin:0 0 12px;text-shadow:0 4px 18px rgba(0,0,0,.42)}.subtitle{font-size:18px;opacity:.96;margin:0 0 24px}
     .btn{border:0;border-radius:999px;padding:17px 32px;font-size:21px;font-weight:900;color:#10200c;background:linear-gradient(135deg,#fff4a8,#d4a226);box-shadow:0 18px 48px rgba(212,162,38,.35);cursor:pointer}
     #videoScreen{z-index:15;background:#000}.video{height:100dvh;width:100vw;object-fit:contain;background:#000}.skip{position:fixed;right:14px;bottom:18px;z-index:16;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(0,0,0,.45);color:white;padding:11px 16px;font-weight:800}
+    .videoHelp{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);z-index:17;width:min(92vw,430px);padding:18px 16px;border-radius:22px;background:rgba(0,0,0,.68);border:1px solid rgba(255,255,255,.20);text-align:center;box-shadow:0 18px 55px rgba(0,0,0,.45);display:none}.videoHelp.show{display:block}.videoHelp p{margin:0 0 12px;font-size:15px;line-height:1.35;color:#fff}.videoHelp button{border:0;border-radius:999px;padding:13px 20px;font-weight:900;font-size:16px;background:linear-gradient(135deg,#fff4a8,#d4a226);color:#10200c}
     #main,#gift{z-index:5;background:#000}.stage{position:relative;height:100dvh;width:100vw;display:flex;align-items:center;justify-content:center;background:#000}.artWrap{position:relative;display:inline-block;line-height:0;max-width:100vw;max-height:100dvh}.art{max-width:100vw;max-height:100dvh;width:auto;height:auto;display:block;user-select:none;-webkit-user-drag:none}
     .hotspot{position:absolute;border:0;background:rgba(255,255,255,0);cursor:pointer;border-radius:18px}.hotspot.debug{background:rgba(0,255,120,.25);outline:2px solid rgba(0,255,120,.95)}
     .closeVisible{position:absolute;right:14px;top:14px;width:48px;height:48px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.50);color:white;font-size:30px;line-height:42px;font-weight:300;cursor:pointer;z-index:10;box-shadow:0 12px 28px rgba(0,0,0,.38)}.closeVisible.debug{background:rgba(255,0,100,.45);outline:2px solid #ff4b9e}
@@ -47,8 +47,12 @@
   </section>
 
   <section id="videoScreen" class="screen hidden">
-    <video id="introVideo" class="video" src="assets/video.mp4" playsinline webkit-playsinline preload="auto"></video>
-    <button id="skipBtn" class="skip">Pular</button>
+    <video id="introVideo" class="video" src="assets/video.mp4" playsinline webkit-playsinline preload="metadata" poster="assets/preview.jpg"></video>
+    <div id="videoHelp" class="videoHelp">
+      <p>A abertura não iniciou automaticamente neste navegador.</p>
+      <button id="retryVideoBtn" type="button">▶ Reproduzir abertura</button>
+    </div>
+    <button id="skipBtn" class="skip">Pular abertura</button>
   </section>
 
   <section id="main" class="screen hidden">
@@ -68,36 +72,45 @@
   <script>
     const DEBUG = new URLSearchParams(location.search).has('debug');
     const $ = id => document.getElementById(id);
-    const start=$('start'), videoScreen=$('videoScreen'), main=$('main'), gift=$('gift'), music=$('music'), video=$('introVideo'), loader=$('loader');
+    const start=$('start'), videoScreen=$('videoScreen'), main=$('main'), gift=$('gift'), music=$('music'), video=$('introVideo'), loader=$('loader'), videoHelp=$('videoHelp');
     const whatsapp = 'https://wa.me/558196863791?text=' + encodeURIComponent('Olá! Confirmo minha presença no aniversário de Ravi Carlos.');
     const maps = 'https://www.google.com/maps/place/park+massa+pizzas/data=!4m2!3m1!1s0x7ab1fc14cd0eac9:0xb2663f03dbdcf8e4?sa=X&ved=1t:242&ictx=111';
     function show(el){[start,videoScreen,main,gift].forEach(s=>s.classList.add('hidden')); el.classList.remove('hidden');}
     async function goFullscreen(){try{ if(document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); }catch(e){}}
+    let videoStarted = false;
+    let videoTimeout = null;
+    function showVideoHelp(){ videoHelp.classList.add('show'); }
+    function hideVideoHelp(){ videoHelp.classList.remove('show'); }
+    async function startIntroVideo(){
+      hideVideoHelp();
+      videoStarted = false;
+      try{ video.pause(); video.currentTime = 0; }catch(e){}
+      video.muted = false;
+      video.volume = 1;
+      clearTimeout(videoTimeout);
+      videoTimeout = setTimeout(()=>{ if(!videoStarted) showVideoHelp(); }, 2200);
+      try{
+        const playPromise = video.play();
+        if(playPromise!==undefined) await playPromise;
+      }catch(e){
+        clearTimeout(videoTimeout);
+        showVideoHelp();
+      }
+    }
     $('startBtn').onclick = async () => {
       loader.classList.add('show');
       await goFullscreen();
       try{ music.volume = 0.30; await music.play(); }catch(e){}
       loader.classList.remove('show');
       show(videoScreen);
-      video.muted = false;
-      video.volume = 1;
-      video.currentTime = 0;
-      const playPromise = video.play();
-      if(playPromise!==undefined){
-        try{
-          await playPromise;
-        }catch(e){
-          loader.classList.remove('show');
-          if(confirm('Não foi possível iniciar a abertura automaticamente. Deseja tentar novamente?')){
-            try{ await video.play(); }
-            catch(e2){ /* permanece na tela do vídeo */ }
-          }
-        }
-      }
+      video.load();
+      startIntroVideo();
     };
+    video.addEventListener('playing',()=>{ videoStarted=true; clearTimeout(videoTimeout); hideVideoHelp(); });
     video.addEventListener('ended',()=>show(main));
-    video.addEventListener('error',()=>{ alert('O vídeo não pôde ser carregado. Verifique sua conexão e toque em Pular se desejar continuar.');});
-    $('skipBtn').onclick=()=>{video.pause(); show(main)};
+    video.addEventListener('error',()=>{ clearTimeout(videoTimeout); showVideoHelp(); });
+    $('retryVideoBtn').onclick=()=>startIntroVideo();
+    $('skipBtn').onclick=()=>{video.pause(); clearTimeout(videoTimeout); show(main)};
     $('btnWhatsapp').onclick=()=> window.open(whatsapp,'_blank');
     $('btnMaps').onclick=()=> window.open(maps,'_blank');
     $('btnGifts').onclick=()=> show(gift);
