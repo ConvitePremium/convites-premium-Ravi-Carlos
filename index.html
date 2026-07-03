@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ravi Carlos - 1 Aninho</title>
+  <meta name="description" content="Clique para abrir o convite." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ravi Carlos - 1 Aninho" />
+  <meta property="og:description" content="Clique para abrir o convite." />
+  <meta property="og:image" content="https://convitepremium.github.io/convites-premium-Ravi-Carlos/assets/preview.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1731" />
+  <meta property="og:image:height" content="909" />
+  <meta property="og:url" content="https://convitepremium.github.io/convites-premium-Ravi-Carlos/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#58bdf4" />
+  <link rel="preload" href="assets/preview.jpg" as="image" />
+  <link rel="preload" href="assets/principal.webp" as="image" />
+  <link rel="preload" href="assets/presentes.webp" as="image" />
+  <link rel="preload" href="assets/video.mp4" as="video" />
+  <style>
+    *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071b12;font-family:Arial,Helvetica,sans-serif;color:white;touch-action:manipulation}
+    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 5%,rgba(101,206,255,.30),transparent 38%),linear-gradient(180deg,#071b12,#0b2b16 70%,#041009);z-index:-3}
+    .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#06120c;transition:opacity .5s ease,visibility .5s ease}.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    #start{z-index:20;background-image:linear-gradient(rgba(5,18,12,.12),rgba(5,18,12,.70)),url('assets/preview.jpg');background-size:cover;background-position:center}
+    .start-card{text-align:center;padding:30px 24px;width:min(92vw,480px);border:1px solid rgba(255,217,107,.35);border-radius:28px;background:rgba(0,30,20,.34);backdrop-filter:blur(8px);box-shadow:0 22px 70px rgba(0,0,0,.55)}
+    .tag{letter-spacing:.34em;color:#ffd76b;font-size:12px;font-weight:900;margin-bottom:16px}.title{font-size:clamp(42px,10vw,74px);font-weight:900;line-height:.95;margin:0 0 12px;text-shadow:0 4px 18px rgba(0,0,0,.42)}.subtitle{font-size:18px;opacity:.96;margin:0 0 24px}
+    .btn{border:0;border-radius:999px;padding:17px 32px;font-size:21px;font-weight:900;color:#10200c;background:linear-gradient(135deg,#fff4a8,#d4a226);box-shadow:0 18px 48px rgba(212,162,38,.35);cursor:pointer}
+    #videoScreen{z-index:15;background:#000}.video{height:100dvh;width:100vw;object-fit:contain;background:#000}.skip{position:fixed;right:14px;bottom:18px;z-index:16;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(0,0,0,.45);color:white;padding:11px 16px;font-weight:800}
+    #main,#gift{z-index:5;background:#000}.stage{position:relative;height:100dvh;width:100vw;display:flex;align-items:center;justify-content:center;background:#000}.artWrap{position:relative;display:inline-block;line-height:0;max-width:100vw;max-height:100dvh}.art{max-width:100vw;max-height:100dvh;width:auto;height:auto;display:block;user-select:none;-webkit-user-drag:none}
+    .hotspot{position:absolute;border:0;background:rgba(255,255,255,0);cursor:pointer;border-radius:18px}.hotspot.debug{background:rgba(0,255,120,.25);outline:2px solid rgba(0,255,120,.95)}
+    .closeVisible{position:absolute;right:14px;top:14px;width:48px;height:48px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.50);color:white;font-size:30px;line-height:42px;font-weight:300;cursor:pointer;z-index:10;box-shadow:0 12px 28px rgba(0,0,0,.38)}.closeVisible.debug{background:rgba(255,0,100,.45);outline:2px solid #ff4b9e}
+    .loader{position:fixed;inset:0;z-index:30;background:#06120c;display:none;align-items:center;justify-content:center;text-align:center}.loader.show{display:flex}.spark{font-size:42px;animation:pulse 1.1s infinite alternate}.loader p{color:#ffdf7b;font-weight:800;letter-spacing:.12em}@keyframes pulse{to{transform:scale(1.16);opacity:.65}}
+  </style>
+</head>
+<body>
+  <audio id="music" src="assets/musica.mp3" loop preload="auto"></audio>
+
+  <section id="start" class="screen">
+    <div class="start-card">
+      <div class="tag">CONVITE PREMIUM</div>
+      <h1 class="title">Ravi Carlos</h1>
+      <p class="subtitle">Toque para iniciar a experiência</p>
+      <button id="startBtn" class="btn">Iniciar convite</button>
+    </div>
+  </section>
+
+  <section id="videoScreen" class="screen hidden">
+    <video id="introVideo" class="video" src="assets/video.mp4" playsinline webkit-playsinline preload="auto"></video>
+    <button id="skipBtn" class="skip">Pular</button>
+  </section>
+
+  <section id="main" class="screen hidden">
+    <div class="stage"><div class="artWrap" id="mainWrap"><img id="mainImg" class="art" src="assets/principal.webp" alt="Convite Ravi Carlos 1 aninho">
+      <button class="hotspot" id="btnWhatsapp" aria-label="Confirmar presença"></button>
+      <button class="hotspot" id="btnMaps" aria-label="Localização"></button>
+      <button class="hotspot" id="btnGifts" aria-label="Sugestões de presentes"></button>
+    </div></div>
+  </section>
+
+  <section id="gift" class="screen hidden">
+    <div class="stage"><div class="artWrap" id="giftWrap"><img class="art" src="assets/presentes.webp" alt="Sugestões de presentes"><button id="backBtn" class="closeVisible" aria-label="Voltar">×</button></div></div>
+  </section>
+
+  <div id="loader" class="loader"><div><div class="spark">✨</div><p>PREPARANDO CONVITE</p></div></div>
+
+  <script>
+    const DEBUG = new URLSearchParams(location.search).has('debug');
+    const $ = id => document.getElementById(id);
+    const start=$('start'), videoScreen=$('videoScreen'), main=$('main'), gift=$('gift'), music=$('music'), video=$('introVideo'), loader=$('loader');
+    const whatsapp = 'https://wa.me/558196863791?text=' + encodeURIComponent('Olá! Confirmo minha presença no aniversário de Ravi Carlos.');
+    const maps = 'https://www.google.com/maps/place/park+massa+pizzas/data=!4m2!3m1!1s0x7ab1fc14cd0eac9:0xb2663f03dbdcf8e4?sa=X&ved=1t:242&ictx=111';
+    function show(el){[start,videoScreen,main,gift].forEach(s=>s.classList.add('hidden')); el.classList.remove('hidden');}
+    async function goFullscreen(){try{ if(document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); }catch(e){}}
+    $('startBtn').onclick = async () => {
+      loader.classList.add('show');
+      await goFullscreen();
+      try{ music.volume = 0.30; await music.play(); }catch(e){}
+      loader.classList.remove('show');
+      show(videoScreen);
+      try{ video.muted = false; video.volume = 1; video.currentTime = 0; await video.play(); }catch(e){ show(main); }
+    };
+    video.addEventListener('ended',()=>show(main));
+    $('skipBtn').onclick=()=>{video.pause(); show(main)};
+    $('btnWhatsapp').onclick=()=> window.open(whatsapp,'_blank');
+    $('btnMaps').onclick=()=> window.open(maps,'_blank');
+    $('btnGifts').onclick=()=> show(gift);
+    $('backBtn').onclick=()=> show(main);
+    function placeHotspots(){
+      // posições em porcentagem da imagem principal
+      const spots=[
+        ['btnWhatsapp', 16.5, 66.3, 67, 6.8],
+        ['btnMaps', 16.5, 74.1, 67, 6.8],
+        ['btnGifts', 16.5, 81.7, 67, 6.8]
+      ];
+      spots.forEach(([id,x,y,ww,hh])=>{const el=$(id); el.style.left=x+'%';el.style.top=y+'%';el.style.width=ww+'%';el.style.height=hh+'%'; if(DEBUG) el.classList.add('debug')});
+      if(DEBUG) $('backBtn').classList.add('debug');
+    }
+    window.addEventListener('load', placeHotspots); window.addEventListener('resize', placeHotspots); setTimeout(placeHotspots,500);
+  </script>
+</body>
+</html>
