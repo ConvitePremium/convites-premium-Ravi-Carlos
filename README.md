@@ -16,4 +16,3 @@ Use `?debug=1` no final do link para visualizar as áreas clicáveis.
 
 ## Observação
 O vídeo mantém o áudio original do personagem. A música de fundo toca separada em 30% de volume.
-forçar deploy

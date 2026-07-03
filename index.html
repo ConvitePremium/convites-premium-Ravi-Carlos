@@ -79,9 +79,24 @@
       try{ music.volume = 0.30; await music.play(); }catch(e){}
       loader.classList.remove('show');
       show(videoScreen);
-      try{ video.muted = false; video.volume = 1; video.currentTime = 0; await video.play(); }catch(e){ show(main); }
+      video.muted = false;
+      video.volume = 1;
+      video.currentTime = 0;
+      const playPromise = video.play();
+      if(playPromise!==undefined){
+        try{
+          await playPromise;
+        }catch(e){
+          loader.classList.remove('show');
+          if(confirm('Não foi possível iniciar a abertura automaticamente. Deseja tentar novamente?')){
+            try{ await video.play(); }
+            catch(e2){ /* permanece na tela do vídeo */ }
+          }
+        }
+      }
     };
     video.addEventListener('ended',()=>show(main));
+    video.addEventListener('error',()=>{ alert('O vídeo não pôde ser carregado. Verifique sua conexão e toque em Pular se desejar continuar.');});
     $('skipBtn').onclick=()=>{video.pause(); show(main)};
     $('btnWhatsapp').onclick=()=> window.open(whatsapp,'_blank');
     $('btnMaps').onclick=()=> window.open(maps,'_blank');
